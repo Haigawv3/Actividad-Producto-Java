@@ -1,87 +1,80 @@
+package biblioteca;
+
 import java.util.Scanner;
 
 public class Main {
 
-    // Método estático para comparar productos
-    public static String compararProductos(Producto p1, Producto p2, double utilidad) {
-
-        double precio1 = p1.calcularPrecio(utilidad);
-        double precio2 = p2.calcularPrecio(utilidad);
-
-        if (precio1 > precio2) {
-            return "El producto con mayor precio es: " + p1.getDescripcion() +
-                    " con precio $" + precio1;
-        } else if (precio2 > precio1) {
-            return "El producto con mayor precio es: " + p2.getDescripcion() +
-                    " con precio $" + precio2;
-        } else {
-            return "Ambos productos tienen el mismo precio.";
-        }
-    }
-
     public static void main(String[] args) {
 
+        Biblioteca biblioteca = new Biblioteca();
         Scanner sc = new Scanner(System.in);
+        int opcion;
 
-        Producto producto1 = new Producto();
-        Producto producto2 = new Producto();
+        do {
+            System.out.println("\n===== SISTEMA DE BIBLIOTECA =====");
+            System.out.println("1. Registrar Libro");
+            System.out.println("2. Registrar Usuario");
+            System.out.println("3. Prestar Libro");
+            System.out.println("4. Mostrar Libros");
+            System.out.println("5. Generar Reporte");
+            System.out.println("0. Salir");
+            System.out.print("Seleccione una opción: ");
 
-        double utilidad = 0;
+            opcion = sc.nextInt();
 
-        try {
+            switch (opcion) {
 
-            System.out.println("=== Captura Producto 1 ===");
+                case 1:
+                    System.out.print("ID Libro: ");
+                    int idL = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Título: ");
+                    String titulo = sc.nextLine();
+                    System.out.print("Autor: ");
+                    String autor = sc.nextLine();
+                    System.out.print("Ejemplares: ");
+                    int ejemplares = sc.nextInt();
 
-            System.out.print("Descripcion: ");
-            producto1.setDescripcion(sc.nextLine());
+                    biblioteca.registrarLibro(new Libro(idL, titulo, autor, ejemplares));
+                    break;
 
-            System.out.print("Codigo: ");
-            producto1.setCodigo(sc.nextLine());
+                case 2:
+                    System.out.print("ID Usuario: ");
+                    int idU = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Nombre: ");
+                    String nombre = sc.nextLine();
 
-            System.out.print("Tipo: ");
-            producto1.setTipo(sc.nextLine());
+                    biblioteca.registrarUsuario(new Usuario(idU, nombre));
+                    break;
 
-            System.out.print("Costo: ");
-            producto1.setCosto(Double.parseDouble(sc.nextLine()));
+                case 3:
+                    System.out.print("ID Libro: ");
+                    int libroId = sc.nextInt();
+                    System.out.print("ID Usuario: ");
+                    int usuarioId = sc.nextInt();
 
-            System.out.print("Impuesto (%): ");
-            producto1.setImpuesto(Double.parseDouble(sc.nextLine()));
+                    biblioteca.prestarLibro(libroId, usuarioId);
+                    break;
 
+                case 4:
+                    biblioteca.mostrarLibros();
+                    break;
 
-            System.out.println("\n=== Captura Producto 2 ===");
+                case 5:
+                    biblioteca.generarReporte();
+                    break;
 
-            System.out.print("Descripcion: ");
-            producto2.setDescripcion(sc.nextLine());
+                case 0:
+                    System.out.println("Saliendo del sistema...");
+                    break;
 
-            System.out.print("Codigo: ");
-            producto2.setCodigo(sc.nextLine());
+                default:
+                    System.out.println("Opción inválida.");
+            }
 
-            System.out.print("Tipo: ");
-            producto2.setTipo(sc.nextLine());
+        } while (opcion != 0);
 
-            System.out.print("Costo: ");
-            producto2.setCosto(Double.parseDouble(sc.nextLine()));
-
-            System.out.print("Impuesto (%): ");
-            producto2.setImpuesto(Double.parseDouble(sc.nextLine()));
-
-            System.out.print("\nPorcentaje de utilidad: ");
-            utilidad = Double.parseDouble(sc.nextLine());
-
-        } catch (Exception e) {
-            System.out.println("Error en la entrada de datos.");
-            return;
-        }
-
-        // Mostrar productos
-        System.out.println("\n--- Producto 1 ---");
-        producto1.muestraProducto();
-
-        System.out.println("\n--- Producto 2 ---");
-        producto2.muestraProducto();
-
-        // Comparación
-        String resultado = compararProductos(producto1, producto2, utilidad);
-        System.out.println("\n" + resultado);
+        sc.close();
     }
 }
